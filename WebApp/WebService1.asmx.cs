@@ -24,8 +24,9 @@ namespace WebApp
 
         [WebMethod]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = false)]
-        public List<string> HelloWorld(string entradaUsuario)
+        public List<string> HelloWorld(string entradaUsuario, string chave)
         {
+            new Validacao(chave);
             string autenticacao = @"AuthType = OAuth;
             Username = wesleyalvesdealbuquerque@wesley356.onmicrosoft.com;
             Password = We230398*;
