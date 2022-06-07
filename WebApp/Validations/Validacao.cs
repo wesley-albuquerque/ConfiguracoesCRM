@@ -7,7 +7,7 @@ namespace WebApp
 {
     public class Validacao
     {
-        public string StringConnection { get; set; }
+        public string StringConnection { get; private set; }
 
         public Validacao(string chave) 
         {

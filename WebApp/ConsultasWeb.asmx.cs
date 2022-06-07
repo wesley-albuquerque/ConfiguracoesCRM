@@ -8,6 +8,10 @@ using System.Net;
 using System.Web;
 using System.Web.Script.Services;
 using System.Web.Services;
+using WebApp.ClassesCompartilhadas;
+using WebApp.Models;
+using WebApp.Reponse;
+using WebApp.Requests;
 
 namespace WebApp
 {
@@ -24,7 +28,7 @@ namespace WebApp
 
         [WebMethod]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = false)]
-        public List<string> ConsultaCRM(BuscaRequest request)
+        public BuscaResponse ConsultaCRM(BuscaRequest request)
         {
             try
             {
@@ -49,11 +53,27 @@ namespace WebApp
 
                 EntityCollection resultadoBusca = credencial.RetrieveMultiple(parametrosBusca);
 
-                List<string> listaNomes = new List<string>();
+                BuscaResponse response = new BuscaResponse();
+                
 
                 foreach (var item in resultadoBusca.Entities)
                 {
-                    listaNomes.Add(item.GetAttributeValue<string>(request.AttributeName));
+                    response.Object.Add(new Contact()
+                    {
+                        Cargo = item.GetAttributeValue<string>("jobtitle"),
+                        Nome = item.Attributes["firstname"].ToString(),
+                        Sobrenome = item.Attributes["lastname"].ToString(),
+                        Email = item.Attributes["emailaddress1"].ToString(),
+                        Endereco = new Endereco()
+                        {
+                            Rua = item.Attributes["address1_line1"].ToString(),
+                            Numero = item.Attributes["address1_line2"].ToString(),
+                            Cidade = item.Attributes["address1_city"].ToString()
+
+
+                        }
+                    }) ;
+                    response.Object.Add(item.GetAttributeValue<string>(request.AttributeName));
 
                 }
 
@@ -66,7 +86,7 @@ namespace WebApp
 
 
 
-                return listaNomes;
+                return response;
             }
             catch (Exception ex)
             {

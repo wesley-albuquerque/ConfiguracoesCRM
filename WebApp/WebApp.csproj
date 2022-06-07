@@ -149,6 +149,7 @@
     <Compile Include="Requests\BuscaRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ClassesCompartilhadas\Endereco.cs" />
+    <Compile Include="Response\BuscaResponse.cs" />
     <Compile Include="Validations\Validacao.cs" />
     <Compile Include="ConsultasWeb.asmx.cs">
       <DependentUpon>ConsultasWeb.asmx</DependentUpon>
