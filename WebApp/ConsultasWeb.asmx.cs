@@ -54,7 +54,8 @@ namespace WebApp
                 EntityCollection resultadoBusca = credencial.RetrieveMultiple(parametrosBusca);
 
                 BuscaResponse response = new BuscaResponse();
-                
+
+                //response.Object = new Contact();
 
                 foreach (var item in resultadoBusca.Entities)
                 {
@@ -73,7 +74,7 @@ namespace WebApp
 
                         }
                     }) ;
-                    response.Object.Add(item.GetAttributeValue<string>(request.AttributeName));
+                    //response.Object.Add(item.GetAttributeValue<string>(request.AttributeName));
 
                 }
 
