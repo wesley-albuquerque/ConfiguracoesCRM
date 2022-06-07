@@ -140,13 +140,17 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Web.config" />
-    <Content Include="WebService1.asmx" />
+    <Content Include="ConsultasWeb.asmx" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\Account.cs" />
+    <Compile Include="Models\Contact.cs" />
+    <Compile Include="Models\Product.cs" />
+    <Compile Include="Requests\BuscaRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Validacao.cs" />
-    <Compile Include="WebService1.asmx.cs">
-      <DependentUpon>WebService1.asmx</DependentUpon>
+    <Compile Include="Validations\Validacao.cs" />
+    <Compile Include="ConsultasWeb.asmx.cs">
+      <DependentUpon>ConsultasWeb.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
   </ItemGroup>
