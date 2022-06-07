@@ -13,5 +13,9 @@ namespace WebApp.Reponse
         public List<Contact> Object { get; set; }
         public bool Sucess { get; set; }
         public DateTime ExecutionTime { get; set; }
+        public BuscaResponse()
+        {
+            Object = new List<Contact>();
+        }
     }
 }

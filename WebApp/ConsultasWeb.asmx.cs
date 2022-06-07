@@ -56,24 +56,23 @@ namespace WebApp
                 BuscaResponse response = new BuscaResponse();
 
                 //response.Object = new Contact();
-
+                Contact contato = new Contact();
                 foreach (var item in resultadoBusca.Entities)
                 {
-                    response.Object.Add(new Contact()
+                    contato = new Contact()
                     {
-                        Cargo = item.GetAttributeValue<string>("jobtitle"),
-                        Nome = item.Attributes["firstname"].ToString(),
-                        Sobrenome = item.Attributes["lastname"].ToString(),
-                        Email = item.Attributes["emailaddress1"].ToString(),
+                        Cargo = item.Contains("jobtitle") ? item.GetAttributeValue<string>("jobtitle") : string.Empty,
+                        Nome = item.Contains("firstname") ? item.Attributes["firstname"].ToString() : string.Empty,
+                        Sobrenome = item.Contains("lastname") ? item.Attributes["lastname"].ToString() : string.Empty,
+                        Email = item.Contains("emailaddress1") ? item.Attributes["emailaddress1"].ToString() : string.Empty,
                         Endereco = new Endereco()
                         {
-                            Rua = item.Attributes["address1_line1"].ToString(),
-                            Numero = item.Attributes["address1_line2"].ToString(),
-                            Cidade = item.Attributes["address1_city"].ToString()
-
-
+                            Rua = item.Contains("address1_line1") ? item.Attributes["address1_line1"].ToString() : string.Empty,
+                            Numero = item.Contains("address1_line2") ? item.Attributes["address1_line2"].ToString() : string.Empty,
+                            Cidade = item.Contains("address1_city") ? item.Attributes["address1_city"].ToString() : string.Empty,
                         }
-                    }) ;
+                    };
+                    response.Object.Add(contato);
                     //response.Object.Add(item.GetAttributeValue<string>(request.AttributeName));
 
                 }
