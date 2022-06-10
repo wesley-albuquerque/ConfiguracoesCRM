@@ -77,15 +77,6 @@ namespace WebApp
 
                 }
 
-
-
-
-
-
-
-
-
-
                 return response;
             }
             catch (Exception ex)
