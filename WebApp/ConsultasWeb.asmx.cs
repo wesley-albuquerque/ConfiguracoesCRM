@@ -56,10 +56,10 @@ namespace WebApp
                 BuscaResponse response = new BuscaResponse();
 
                 //response.Object = new Contact();
-                Contact contato = new Contact();
+                
                 foreach (var item in resultadoBusca.Entities)
                 {
-                    contato = new Contact()
+                    Contact contato = new Contact()
                     {
                         Cargo = item.Contains("jobtitle") ? item.GetAttributeValue<string>("jobtitle") : string.Empty,
                         Nome = item.Contains("firstname") ? item.Attributes["firstname"].ToString() : string.Empty,

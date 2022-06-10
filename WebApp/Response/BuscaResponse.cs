@@ -14,6 +14,7 @@ namespace WebApp.Reponse
 
         [XmlElement(Type = typeof(Contact))]
         [XmlElement(Type = typeof (Account))]
+        [XmlElement(Type = typeof(Product))]
         public List<object> Object { get; set; }
         public bool Sucess { get; set; }
         public DateTime ExecutionTime { get; set; }
