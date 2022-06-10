@@ -32,6 +32,8 @@ namespace WebApp
         {
             try
             {
+                DateTime inicio = DateTime.Now; 
+                
                 new Validacao(request.Chave);
                 string autenticacao = @"AuthType = OAuth;
             Username = wesleyalvesdealbuquerque@wesley356.onmicrosoft.com;
@@ -53,31 +55,22 @@ namespace WebApp
 
                 EntityCollection resultadoBusca = credencial.RetrieveMultiple(parametrosBusca);
 
+
                 BuscaResponse response = new BuscaResponse();
-
-                //response.Object = new Contact();
-                
-                foreach (var item in resultadoBusca.Entities)
+                switch (request.EntityName)
                 {
-                    Contact contato = new Contact()
-                    {
-                        Cargo = item.Contains("jobtitle") ? item.GetAttributeValue<string>("jobtitle") : string.Empty,
-                        Nome = item.Contains("firstname") ? item.Attributes["firstname"].ToString() : string.Empty,
-                        Sobrenome = item.Contains("lastname") ? item.Attributes["lastname"].ToString() : string.Empty,
-                        Email = item.Contains("emailaddress1") ? item.Attributes["emailaddress1"].ToString() : string.Empty,
-                        Endereco = new Endereco()
-                        {
-                            Rua = item.Contains("address1_line1") ? item.Attributes["address1_line1"].ToString() : string.Empty,
-                            Numero = item.Contains("address1_line2") ? item.Attributes["address1_line2"].ToString() : string.Empty,
-                            Cidade = item.Contains("address1_city") ? item.Attributes["address1_city"].ToString() : string.Empty,
-                        }
-                    };
-                    response.Object.Add(contato);
-                    //response.Object.Add(item.GetAttributeValue<string>(request.AttributeName));
-
+                    case "account":
+                        return response;
+                    case "contact":
+                        response.InputContactData(resultadoBusca.Entities);
+                        return response;
+                    default:
+                        return response;
+                        
                 }
 
-                return response;
+
+                
             }
             catch (Exception ex)
             {
