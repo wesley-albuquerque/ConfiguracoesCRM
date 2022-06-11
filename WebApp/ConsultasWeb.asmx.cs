@@ -27,7 +27,7 @@ namespace WebApp
     {
 
         [WebMethod]
-        [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = false)]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
         public BuscaResponse ConsultaCRM(BuscaRequest request)
         {
             try
@@ -64,6 +64,9 @@ namespace WebApp
                         return response;
                     case "contact":
                         response.InputContactData(resultadoBusca.Entities);
+                        return response;
+                    case "product":
+                        response.InputProductData(resultadoBusca.Entities);
                         return response;
                     default:
                         return response;

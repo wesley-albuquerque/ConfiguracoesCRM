@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xrm.Sdk;
 using System;
 using System.Collections.Generic;
-
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Xml.Serialization;
@@ -34,7 +34,6 @@ namespace WebApp.Reponse
         {
             foreach (var item in ColecaoDadosEntidade)
             {
-
                 Contact contato = new Contact()
                 {
                     Cargo = item.Contains("jobtitle") ? item.GetAttributeValue<string>("jobtitle") : string.Empty,
@@ -47,6 +46,22 @@ namespace WebApp.Reponse
             }
             //response.Object.Add(item.GetAttributeValue<string>(request.AttributeName));
 
+        }
+        public void InputProductData(DataCollection<Entity> ColecaoDadosEntidade)
+        {
+            foreach (var item in ColecaoDadosEntidade)
+            {
+                Product product = new Product()
+                {
+                    Descricao = item.Contains("description") ? item.GetAttributeValue<string>("description") : String.Empty,
+                    Nome = item.Contains("name") ? item.GetAttributeValue<string>("name") : String.Empty,
+                    ProdutoID = item.Contains("productnumber") ? item.Attributes["productnumber"].ToString() : string.Empty,
+                    ValidoAPartir = item.Contains("validfromdate") ? (DateTime)item.Attributes["validfromdate"] : new DateTime(1900, 1, 1),
+                    ValidoAte = item.Contains("validtodate") ? DateTime.ParseExact(item.Attributes["validtodate"].ToString(), "dd/mm/yyyy hh:mm:ss", CultureInfo.InvariantCulture).Date : new DateTime(1900, 1, 1)
+                };
+
+                Object.Add(product);
+            }
         }
         public void InputAccountData(DataCollection<Entity> ColecaoDadosEntidade)
         {
