@@ -12,5 +12,7 @@ namespace WebApp.Models
         public string Name { get; set; }
         public string Telephone1  { get; set; }
         public Endereco Endereco { get; set; }
+        public string Site { get; set; }
+        public string ListaPrecoProdutos { get; set; }
     }
 }

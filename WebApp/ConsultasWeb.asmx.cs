@@ -60,6 +60,7 @@ namespace WebApp
                 switch (request.EntityName)
                 {
                     case "account":
+                        response.InputAccountData(resultadoBusca.Entities);
                         return response;
                     case "contact":
                         response.InputContactData(resultadoBusca.Entities);

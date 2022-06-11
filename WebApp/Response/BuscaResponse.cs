@@ -48,6 +48,22 @@ namespace WebApp.Reponse
             //response.Object.Add(item.GetAttributeValue<string>(request.AttributeName));
 
         }
+        public void InputAccountData(DataCollection<Entity> ColecaoDadosEntidade)
+        {
+            foreach (var item in ColecaoDadosEntidade)
+            {
+
+                Account conta = new Account()
+                {
+                    Name = item.Contains("name") ? item.GetAttributeValue<string>("name") : "",
+                    Telephone1 = item.Contains("telephone1") ? item.GetAttributeValue<string>("telephone1") : "",
+                    Site = item.Contains("websiteurl") ? item.Attributes["websiteurl"].ToString() : "",
+                    ListaPrecoProdutos = item.Contains("defaultpricelevelid") ? item.GetAttributeValue<string>("defaultpricelevelid") : string.Empty,
+                    Endereco = InputEnderecoData(item)
+
+                };
+            }
+        }
         public Endereco InputEnderecoData(Entity EntidadeComEndereco)
         {
 
