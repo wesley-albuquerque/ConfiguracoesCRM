@@ -15,7 +15,7 @@ namespace WebApp.Reponse
         public string Message { get; set; }
 
         [XmlElement(Type = typeof(Contact))]
-        [XmlElement(Type = typeof (Account))]
+        [XmlElement(Type = typeof(Account))]
         [XmlElement(Type = typeof(Product))]
         public List<object> Object { get; set; }
         public bool Sucess { get; set; }
@@ -34,34 +34,33 @@ namespace WebApp.Reponse
         {
             foreach (var item in ColecaoDadosEntidade)
             {
+
                 Contact contato = new Contact()
                 {
                     Cargo = item.Contains("jobtitle") ? item.GetAttributeValue<string>("jobtitle") : string.Empty,
                     Nome = item.Contains("firstname") ? item.Attributes["firstname"].ToString() : string.Empty,
                     Sobrenome = item.Contains("lastname") ? item.Attributes["lastname"].ToString() : string.Empty,
                     Email = item.Contains("emailaddress1") ? item.Attributes["emailaddress1"].ToString() : string.Empty,
-                    Endereco = new Endereco()
-                    {
-                        Rua = item.Contains("address1_line1") ? item.Attributes["address1_line1"].ToString() : string.Empty,
-                        Numero = item.Contains("address1_line2") ? item.Attributes["address1_line2"].ToString() : string.Empty,
-                        Cidade = item.Contains("address1_city") ? item.Attributes["address1_city"].ToString() : string.Empty,
-                    }
+                    Endereco = InputEnderecoData(item)
                 };
                 Object.Add(contato);
-                //response.Object.Add(item.GetAttributeValue<string>(request.AttributeName));
-
             }
-        }
+            //response.Object.Add(item.GetAttributeValue<string>(request.AttributeName));
 
-        private void InputEnderecoData()
+        }
+        public Endereco InputEnderecoData(Entity EntidadeComEndereco)
         {
 
-            //Endereco endereco = new Endereco()
-            //{
-            //    Rua = item.Contains("address1_line1") ? item.Attributes["address1_line1"].ToString() : string.Empty,
-            //    Numero = item.Contains("address1_line2") ? item.Attributes["address1_line2"].ToString() : string.Empty,
-            //    Cidade = item.Contains("address1_city") ? item.Attributes["address1_city"].ToString() : string.Empty,
-            //};
+            Endereco endereco = new Endereco()
+            {
+                Rua = EntidadeComEndereco.Contains("address1_line1") ? EntidadeComEndereco.Attributes["address1_line1"].ToString() : string.Empty,
+                Numero = EntidadeComEndereco.Contains("address1_line2") ? EntidadeComEndereco.Attributes["address1_line2"].ToString() : string.Empty,
+                Cidade = EntidadeComEndereco.Contains("address1_city") ? EntidadeComEndereco.Attributes["address1_city"].ToString() : string.Empty,
+            };
+            return endereco;
         }
     }
 }
+
+
+
