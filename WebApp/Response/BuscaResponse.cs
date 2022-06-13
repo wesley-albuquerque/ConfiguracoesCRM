@@ -44,9 +44,6 @@ namespace WebApp.Reponse
                 };
                 Object.Add(contato);
             }
-            //response.Object.Add(item.GetAttributeValue<string>(request.AttributeName));
-             
-            int i = 1;
         }
         public void InputProductData(DataCollection<Entity> ColecaoDadosEntidade)
         {
