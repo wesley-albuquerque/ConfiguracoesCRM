@@ -13,6 +13,11 @@ namespace WebApp.Models
         public string Cargo { get; set; }
         public string Email { get; set; }
         public Endereco Endereco { get; set; }
+        public override string ToString()
+        {
+            string haha = Nome + " " + Sobrenome;
+            return haha;
+        }
     }
 
 }

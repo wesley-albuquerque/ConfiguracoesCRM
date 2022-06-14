@@ -66,7 +66,7 @@ namespace WebApp
                         return response;
                     case "contact":
                         response.InputContactData(resultadoBusca.Entities);
-                        return response;
+                        return CriarPDF(response);
                     case "product":
                         response.InputProductData(resultadoBusca.Entities);
                         return response;
@@ -84,22 +84,31 @@ namespace WebApp
             }
         }
 
-        [WebMethod]
-        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-        public string CriarPDF()
+        //[WebMethod]
+        //[ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public BuscaResponse CriarPDF(BuscaResponse documento)
         {
+            string texto = "";
+            foreach (var item in documento.Object)
+            {
+                texto += item.ToString() + "\n";
+
+            }
             Document document = new Document();
 
-            Page page = new Page(PageSize.Letter, PageOrientation.Portrait, 54.0f);
-            document.Pages.Add(page);
+            TextArea textArea = new TextArea(texto, 0, 0, 2000, 3000);
+            do
+            {
+                Page page = new Page();
+                page.Elements.Add(textArea);
+                document.Pages.Add(page);
+                textArea = textArea.GetOverflowTextArea();
+            } while (textArea != null);
 
-            string labelText = "Teste de extração de PDF";
-            ceTe.DynamicPDF.PageElements.Label label = new ceTe.DynamicPDF.PageElements.Label(labelText, 0, 0, 504, 100, Font.Helvetica, 18, TextAlign.Center);
-            page.Elements.Add(label);
 
-            document.Draw("c://Output.pdf");
+            document.Draw("c://Users/wealb/Desktop/Output.pdf");
 
-            return "sucess";
+            return documento;
         }
     }
 }
