@@ -5,6 +5,7 @@ using Microsoft.Xrm.Sdk.Query;
 using Microsoft.Xrm.Tooling.Connector;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -34,8 +35,8 @@ namespace WebApp
         {
             try
             {
-                DateTime inicio = DateTime.Now; 
-                
+                DateTime inicio = DateTime.Now;
+
                 new Validacao(request.Chave);
                 string autenticacao = @"AuthType = OAuth;
             Username = wesleyalvesdealbuquerque@wesley356.onmicrosoft.com;
@@ -72,11 +73,11 @@ namespace WebApp
                         return response;
                     default:
                         return response;
-                        
+
                 }
 
 
-                
+
             }
             catch (Exception ex)
             {
@@ -87,28 +88,48 @@ namespace WebApp
         //[WebMethod]
         //[ScriptMethod(ResponseFormat = ResponseFormat.Json)]
         public BuscaResponse CriarPDF(BuscaResponse documento)
-        {
+
             string texto = "";
             foreach (var item in documento.Object)
             {
                 texto += item.ToString() + "\n";
 
             }
-            Document document = new Document();
+    Document document = new Document();
 
-            TextArea textArea = new TextArea(texto, 0, 0, 2000, 3000);
+    TextArea textArea = new TextArea(texto, 0, 0, 2000, 3000);
             do
             {
                 Page page = new Page();
-                page.Elements.Add(textArea);
+    page.Elements.Add(textArea);
                 document.Pages.Add(page);
                 textArea = textArea.GetOverflowTextArea();
-            } while (textArea != null);
+            } while (textArea != null) ;
 
 
-            document.Draw("c://Users/wealb/Desktop/Output.pdf");
+document.Draw("c://Users/wealb/Desktop/Output.pdf");
 
-            return documento;
+return documento;
+
         }
-    }
+  [WebMethod]
+[ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+public byte[] CriarPDF2()
+{
+    Document document = new Document();
+
+    Page page = new Page(PageSize.Letter, PageOrientation.Portrait, 54.0f);
+    document.Pages.Add(page);
+
+
+    string labelText = "Teste de extração de PDF";
+    ceTe.DynamicPDF.PageElements.Label label = new ceTe.DynamicPDF.PageElements.Label(labelText, 0, 0, 504, 100, Font.Helvetica, 18, TextAlign.Center);
+    page.Elements.Add(label);
+
+    MemoryStream stream = new MemoryStream();
+    document.Draw(stream);
+
+    File.WriteAllBytes(@"D:\Users\nome.pdf", stream.ToArray());
+    return stream.ToArray();
+}
 }
