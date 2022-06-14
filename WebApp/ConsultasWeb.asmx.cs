@@ -1,4 +1,6 @@
-﻿using Microsoft.Xrm.Sdk;
+﻿using ceTe.DynamicPDF;
+using ceTe.DynamicPDF.PageElements;
+using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Query;
 using Microsoft.Xrm.Tooling.Connector;
 using System;
@@ -80,6 +82,24 @@ namespace WebApp
             {
                 throw ex;
             }
+        }
+
+        [WebMethod]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public string CriarPDF()
+        {
+            Document document = new Document();
+
+            Page page = new Page(PageSize.Letter, PageOrientation.Portrait, 54.0f);
+            document.Pages.Add(page);
+
+            string labelText = "Teste de extração de PDF";
+            ceTe.DynamicPDF.PageElements.Label label = new ceTe.DynamicPDF.PageElements.Label(labelText, 0, 0, 504, 100, Font.Helvetica, 18, TextAlign.Center);
+            page.Elements.Add(label);
+
+            document.Draw("c://Output.pdf");
+
+            return "sucess";
         }
     }
 }
