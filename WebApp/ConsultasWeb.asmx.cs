@@ -1,4 +1,5 @@
 ﻿using ceTe.DynamicPDF;
+using ceTe.DynamicPDF.Conversion;
 using ceTe.DynamicPDF.PageElements;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Query;
@@ -8,6 +9,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Web;
 using System.Web.Script.Services;
 using System.Web.Services;
@@ -118,21 +120,37 @@ namespace WebApp
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
         public byte[] CriarPDF2()
         {
-            Document document = new Document();
+            //Document document = new Document();
 
-            Page page = new Page(PageSize.Letter, PageOrientation.Portrait, 54.0f);
-            document.Pages.Add(page);
+            //Page page = new Page(PageSize.Letter, PageOrientation.Portrait, 54.0f);
+            //document.Pages.Add(page);
 
 
-            string labelText = "Teste de extração de PDF";
-            ceTe.DynamicPDF.PageElements.Label label = new ceTe.DynamicPDF.PageElements.Label(labelText, 0, 0, 504, 100, Font.Helvetica, 18, TextAlign.Center);
-            page.Elements.Add(label);
+            //string labelText = "Teste de extração de PDF";
+            //ceTe.DynamicPDF.PageElements.Label label = new ceTe.DynamicPDF.PageElements.Label(labelText, 0, 0, 504, 100, Font.Helvetica, 18, TextAlign.Center);
+            //page.Elements.Add(label);
 
-            MemoryStream stream = new MemoryStream();
-            document.Draw(stream);
+            //MemoryStream stream = new MemoryStream();
+            //document.Draw(stream);
 
-            File.WriteAllBytes(@"D:\Users\nome.pdf", stream.ToArray());
-            return stream.ToArray();
+            //File.WriteAllBytes(@"D:\Users\nome.pdf", stream.ToArray());
+            Stream arquivo = File.OpenRead(@"C:\Users\wealb\source\repos\WebApp\WebApp\Documentos\Wesley Alves de Albuquerque .docx");
+            MemoryStream memory = new MemoryStream();
+            arquivo.CopyTo(memory);
+
+
+
+            WordConverter word = new WordConverter(memory.ToArray(), "Wesley Alves de Albuquerque .docx");
+            byte[] ListaBytes = word.Convert();
+            File.WriteAllBytes("c://Users/wealb/Desktop/Output.pdf", ListaBytes);
+
+
+
+
+
+
+            return ListaBytes;
+                        
         }
     }
 }

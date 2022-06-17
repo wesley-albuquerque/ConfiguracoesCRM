@@ -43,6 +43,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DynamicPDF.Converter, Version=3.16.0.46445, Culture=neutral, PublicKeyToken=09b5ce0d5c0a9d8b, processorArchitecture=MSIL">
+      <HintPath>..\packages\ceTe.DynamicPDF.Converter.NET.3.16.0\lib\netstandard20\DynamicPDF.Converter.dll</HintPath>
+    </Reference>
     <Reference Include="DynamicPDF.CoreSuite, Version=11.32.0.46501, Culture=neutral, PublicKeyToken=09b5ce0d5c0a9d8b, processorArchitecture=MSIL">
       <HintPath>..\packages\ceTe.DynamicPDF.CoreSuite.NET.11.32.0\lib\net40\DynamicPDF.CoreSuite.dll</HintPath>
     </Reference>
@@ -142,6 +145,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="DPDFConverterService\DynamicPDF.Converter.Service.exe" />
+    <Content Include="DPDFConverterService\ReadMe.txt" />
     <Content Include="Web.config" />
     <Content Include="ConsultasWeb.asmx" />
   </ItemGroup>
@@ -160,6 +165,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="DPDFConverterService\DynamicPDF.Converter.Service.exe.config" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -167,6 +173,9 @@
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Documentos\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -198,7 +207,11 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+    <Error Condition="!Exists('..\packages\NETStandard.Library.2.0.0\build\netstandard2.0\NETStandard.Library.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NETStandard.Library.2.0.0\build\netstandard2.0\NETStandard.Library.targets'))" />
+    <Error Condition="!Exists('..\packages\ceTe.DynamicPDF.Converter.NET.3.16.0\build\netstandard20\ceTe.DynamicPDF.Converter.NET.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\ceTe.DynamicPDF.Converter.NET.3.16.0\build\netstandard20\ceTe.DynamicPDF.Converter.NET.targets'))" />
   </Target>
+  <Import Project="..\packages\NETStandard.Library.2.0.0\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('..\packages\NETStandard.Library.2.0.0\build\netstandard2.0\NETStandard.Library.targets')" />
+  <Import Project="..\packages\ceTe.DynamicPDF.Converter.NET.3.16.0\build\netstandard20\ceTe.DynamicPDF.Converter.NET.targets" Condition="Exists('..\packages\ceTe.DynamicPDF.Converter.NET.3.16.0\build\netstandard20\ceTe.DynamicPDF.Converter.NET.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
