@@ -5,18 +5,15 @@ using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Query;
 using Microsoft.Xrm.Tooling.Connector;
 using System;
-using System.Collections.Generic;
+using Microsoft.Office.Interop.Word;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Web;
 using System.Web.Script.Services;
 using System.Web.Services;
-using WebApp.ClassesCompartilhadas;
-using WebApp.Models;
 using WebApp.Reponse;
 using WebApp.Requests;
+using Document = ceTe.DynamicPDF.Document;
+using System.Text;
 
 namespace WebApp
 {
@@ -103,7 +100,7 @@ namespace WebApp
             TextArea textArea = new TextArea(texto, 0, 0, 2000, 3000);
             do
             {
-                Page page = new Page();
+                ceTe.DynamicPDF.Page page = new ceTe.DynamicPDF.Page();
                 page.Elements.Add(textArea);
                 document.Pages.Add(page);
                 textArea = textArea.GetOverflowTextArea();
@@ -118,7 +115,7 @@ namespace WebApp
 
         [WebMethod]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-        public byte[] CriarPDF2()
+        public byte[] CriarPDF2(string arquivoBase64)
         {
             //Document document = new Document();
 
@@ -134,23 +131,25 @@ namespace WebApp
             //document.Draw(stream);
 
             //File.WriteAllBytes(@"D:\Users\nome.pdf", stream.ToArray());
-            Stream arquivo = File.OpenRead(@"C:\Users\wealb\source\repos\WebApp\WebApp\Documentos\Wesley Alves de Albuquerque .docx");
-            MemoryStream memory = new MemoryStream();
-            arquivo.CopyTo(memory);
 
+            string path = "C:/Documentos/Teste.docx";
+            byte[] codigo = Convert.FromBase64String(arquivoBase64);        
 
+            File.WriteAllBytes(path, codigo);
+            Application interfaceWord = new Application();
+            Microsoft.Office.Interop.Word.Document arquivoWord = interfaceWord.Documents.Open(path);
 
-            WordConverter word = new WordConverter(memory.ToArray(), "Wesley Alves de Albuquerque .docx");
+            string nome = arquivoWord.Name;
+
+            WordConverter word = new WordConverter(codigo, nome);
             byte[] ListaBytes = word.Convert();
-            File.WriteAllBytes("c://Users/wealb/Desktop/Output.pdf", ListaBytes);
+            File.WriteAllBytes(path + "Output.pdf", ListaBytes);
 
-
-
-
-
+            arquivoWord.Close();
+            File.Delete(path);
 
             return ListaBytes;
-                        
+
         }
     }
 }
