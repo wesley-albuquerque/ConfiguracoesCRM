@@ -76,28 +76,31 @@
     }, ConsultaCNPJ: function (executionContext) {
         var formContext = executionContext.getFormContext();
         var cnpj = formContext.getAttribute("naru_cpf").getValue();
-        //var requisicao = new XMLHttpRequest()
-        //requisicao.open("GET", encodeURI("https://receitaws.com.br/v1/cnpj/" + cnpj), false);
-        //requisicao.send(null);
 
-        //var data = JSON.parse(requisicao.responseText);
-        $.ajax({
-            type: "GET",
-            url: "https://receitaws.com.br/v1/cnpj/" + cnpj,
-            async: false,
-            dataType: "json",
-            crossDomain: true,
-            contentType: "application/json",
-            succes: function (data) {
-                formContext.getAttribute("naru_nomefantasia").setValue(data.fantasia);
-                formContext.getAttribute("naru_inscricaoestadual").setValue(data.atividade_principal[0].code)
-            },
-            error: function (data, exception, errorThrow) {
-                var corpo = data;
-            }
-        })
-        //formContext.getAttribute("naru_nomefantasia").setValue(data.fantasia);
-        //formContext.getAttribute("naru_inscricaoestadual").setValue(data.atividade_principal[0].code)
+        var requisicao = new XMLHttpRequest()
+        requisicao.open("GET", "https://api-publica.speedio.com.br/buscarcnpj?cnpj=" + cnpj, false);
+        requisicao.send(null);
+        var data = JSON.parse(requisicao.responseText);
+
+        //$.ajax({
+        //    type: "get",
+        //    url: "https://receitaws.com.br/v1/cnpj" + cnpj,
+        //    async: true,
+        //    dataType: "json",
+        //    crossDomain: true,
+        //    contentType: "application/json" ,
+        //    succes: function (data) {
+        //        formcontext.getattribute("naru_nomefantasia").setvalue(data.fantasia);
+        //        formcontext.getattribute("naru_inscricaoestadual").setvalue(data.atividade_principal[0].code)
+        //    },
+        //    error: function (data, exception, errorthrow) {
+        //        var corpo = data;
+        //    }
+        //})
+
+
+        formContext.getAttribute("naru_nomefantasia").setValue(data.fantasia);
+        formContext.getAttribute("naru_inscricaoestadual").setValue(data.atividade_principal[0].code)
     }
         
 }
