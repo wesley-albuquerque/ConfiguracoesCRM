@@ -22,6 +22,7 @@
             formContext.getControl("naru_nomefantasia").setVisible(true);
             formContext.getControl("naru_inscricaoestadual").setVisible(true);
             formContext.getControl("naru_nomedocontato").setVisible(true);
+            formContext.getAttribute("naru_nomedocontato").setRequiredLevel("required");
         }
     },
     OnChanceCEP: function (executionContext) {
@@ -71,5 +72,16 @@
         }
 
 
+    }, ConsultaCNPJ: function (executionContext) {
+        var formContext = executionContext.getFormContext();
+        var cnpj = formContext.getAttribute("naru_cpf").getValue();
+        var requisicao = new XMLHttpRequest()
+        requisicao.open("GET", "https://receitaws.com.br/v1/cnpj/" + cnpj, false);
+        requisicao.send();
+
+        var data = JSON.parse(requisicao.responseText);
+        formContext.getAttribute("naru_nomefantasia").setValue(data.fantasia);
+        formContext.getAttribute("naru_inscricaoestadual").setValue(data.atividade_principal[0].code)
     }
+        
 }
