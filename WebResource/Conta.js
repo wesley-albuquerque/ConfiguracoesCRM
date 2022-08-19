@@ -98,9 +98,9 @@
         //    }
         //})
 
-
-        formContext.getAttribute("naru_nomefantasia").setValue(data.fantasia);
-        formContext.getAttribute("naru_inscricaoestadual").setValue(data.atividade_principal[0].code)
+        formContext.getAttribute("naru_nomefantasia").setValue(data["RAZAO SOCIAL"]);
+        formContext.getAttribute("naru_nomefantasia").setValue(data["NOME FANTASIA"]);
+        formContext.getAttribute("naru_inscricaoestadual").setValue(data["CNAE PRINCIPAL CODIGO"]);
     }
         
 }
