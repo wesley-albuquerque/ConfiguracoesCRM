@@ -1,6 +1,9 @@
 ﻿Conta = {
 
     OnChanceCPF_CNPJ: function (executionContext) {
+        formContext.ui.clearFormNotification("CPF")
+        formContext.ui.clearFormNotification("cpf/cnpj")
+        formContext.ui.clearFormNotification("CEP")
         var formContext = executionContext.getFormContext();
 
         formContext.getControl("naru_nomefantasia").setVisible(false);
@@ -12,7 +15,7 @@
 
         var cpf = formContext.getAttribute("naru_cpf").getValue();
         if (cpf == null || (cpf.length != 11 && cpf.length != 14)) {
-            formContext.ui.setFormNotification("CPF/CNPJ inválido", "INFO", "cpf/cnpj invalido")
+            formContext.ui.setFormNotification("CPF/CNPJ inválido", "ERROR", "cpf/cnpj")
             //formContext.getControl("naru_cpf").setNotification("CPF/CNPJ inválido");
             formContext.getAttribute("naru_cpf").setValue("");
             formContext.getControl("naru_cpf").setFocus();
@@ -25,6 +28,15 @@
             formContext.getAttribute("naru_nomedocontato").setRequiredLevel("required");
             Conta.ConsultaCNPJ(executionContext);
         }
+        else if (!Conta.ValidaCPF(cpf)) {
+            formContext.ui.setFormNotification("CPF inválido", "ERROR", "CPF");
+            formContext.getAttribute("naru_cpf").setValue("");
+            formContext.getControl("naru_cpf").setFocus();
+        }
+        else {
+            formContext.ui.clearFormNotification("CPF")
+        }
+        
     },
     OnChanceCEP: function (executionContext) {
         var formContext = executionContext.getFormContext();
@@ -55,19 +67,25 @@
 
             req.send(null);
             data = JSON.parse(req.responseText);
-
-            formContext.getAttribute("address1_line1").setValue(data.logradouro);
-            formContext.getAttribute("address1_line2").setValue(data.bairro);
-            formContext.getAttribute("address1_city").setValue(data.localidade);
-            formContext.getAttribute("address1_stateorprovince").setValue(data.uf);
-            formContext.getAttribute("address1_country").setValue("Brasil");
-
+            if (data.erro == "true" || req.status != 200) {
+                formContext.ui.setFormNotification("CEP inválido", "ERROR", "CEP")
+                formContext.getAttribute("address1_postalcode").setValue(null);
+                formContext.getControl("address1_postalcode").setFocus();
+            }
+            else {
+                formContext.ui.clerFormNotification("CEP")
+                formContext.getAttribute("address1_line1").setValue(data.logradouro);
+                formContext.getAttribute("address1_line2").setValue(data.bairro);
+                formContext.getAttribute("address1_city").setValue(data.localidade);
+                formContext.getAttribute("address1_stateorprovince").setValue(data.uf);
+                formContext.getAttribute("address1_country").setValue("Brasil");
+            }
         }
         else if (cep.length == 0) {
             return
         }
         else {
-            alet("Cep inválido, digite novamente");
+            formContext.ui.setFormNotification("CEP inválido", "ERROR", "CEP")
             formContext.getAttribute("address1_postalcode").setValue("");
             formContext.getControl("address1_postalcode").setFocus();
         }
@@ -97,10 +115,42 @@
         //        var corpo = data;
         //    }
         //})
-
+        formContext.ui.clearFormNotification("cpf/cnpj")
         formContext.getAttribute("name").setValue(data["RAZAO SOCIAL"]);
         formContext.getAttribute("naru_nomefantasia").setValue(data["NOME FANTASIA"]);
         formContext.getAttribute("naru_inscricaoestadual").setValue(data["CNAE PRINCIPAL CODIGO"]);
+    },
+    ValidaCPF: function (cpf) {
+        var rep = 0;
+        for (var g = 1; g > 11; g++) {
+            if (cpf[0] == cpf[g])
+                rep++
+        }
+        if (rep == 10) {
+            return false
+        }
+        var mult = 11
+        var soma1Digito = 0
+        var soma2Digito = 0
+        for (var i = 0; i < 10; i++) {
+            if (i < 9) {
+                soma1Digito += cpf[i] * (mult - 1)
+            }
+            soma2Digito += cpf[i] * mult
+            mult--
+        }
+        var resto = (soma1Digito * 10) % 11
+        var resto2 = (soma2Digito * 10) % 11
+        if (resto == 10) {
+            resto = 0
+        }
+        if (resto == cpf[9] && resto2 == cpf[10]) {
+            return true
+        }
+        else {
+            return false
+        }
     }
-        
+
+
 }
