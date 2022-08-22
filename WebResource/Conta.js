@@ -1,10 +1,9 @@
 ﻿Conta = {
 
     OnChanceCPF_CNPJ: function (executionContext) {
+        var formContext = executionContext.getFormContext();
         formContext.ui.clearFormNotification("CPF")
         formContext.ui.clearFormNotification("cpf/cnpj")
-        formContext.ui.clearFormNotification("CEP")
-        var formContext = executionContext.getFormContext();
 
         formContext.getControl("naru_nomefantasia").setVisible(false);
         formContext.getControl("naru_inscricaoestadual").setVisible(false);
@@ -40,7 +39,7 @@
     },
     OnChanceCEP: function (executionContext) {
         var formContext = executionContext.getFormContext();
-
+        formContext.ui.clearFormNotification("CEP")
         var cep = formContext.getAttribute("address1_postalcode").getValue();
 
         $.ajax({
@@ -73,7 +72,7 @@
                 formContext.getControl("address1_postalcode").setFocus();
             }
             else {
-                formContext.ui.clerFormNotification("CEP")
+                formContext.ui.clearFormNotification("CEP")
                 formContext.getAttribute("address1_line1").setValue(data.logradouro);
                 formContext.getAttribute("address1_line2").setValue(data.bairro);
                 formContext.getAttribute("address1_city").setValue(data.localidade);
