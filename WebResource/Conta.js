@@ -1,7 +1,30 @@
 ﻿Conta = {
 
+    OnChangeTelefone: function (executionContext) {
+        formContext = executionContext.getFormContext();
+        var campo = executionContext.getEventSource().getName();
+        formContext.getControl(campo).clearNotification();
+        telefone = formContext.getAttribute(campo).getValue();
+        if (telefone == null || telefone == "") {
+            return;
+        }
+        else {
+            telefone = telefone.replace(/[^\d]/g, "");
+            if (telefone.length == 11 || telefone.length == 10) {
+                
+                telefone = telefone == 11 ? telefone.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3") : telefone.replace(/(\d{2})(\d{4})(\d{4})/, "($1) $2-$3")
+                formContext.getAttribute(campo).setValue(telefone);
+            }
+            else {
+                formContext.getControl(campo).setNotification("Deve conter 10 ou 11 digitos (prefixo deve ser incluso)");
+                formContext.getControl(campo).setFocus();
+            }
+        }
+    },
+
     OnChanceCPF_CNPJ: function (executionContext) {
         var formContext = executionContext.getFormContext();
+
         formContext.ui.clearFormNotification("CPF");
         formContext.ui.clearFormNotification("cpf/cnpj");
         formContext.ui.clearFormNotification("CNPJ");
@@ -16,12 +39,13 @@
         var cpf = formContext.getAttribute("naru_cpf").getValue();
         if (cpf == null || cpf == "")
             return
-        cpf.replace(/[^\d]/g, "");
+        cpf = cpf.replace(/[^\d]/g, "");
         if (cpf.length != 11 && cpf.length != 14) {
             formContext.ui.setFormNotification("CPF/CNPJ inválido", "ERROR", "cpf/cnpj")
-            //formContext.getControl("naru_cpf").setNotification("CPF/CNPJ inválido");
             formContext.getAttribute("naru_cpf").setValue("");
             formContext.getControl("naru_cpf").setFocus();
+            formContext.getControl("naru_cpf").clearNotification();
+            formContext.getControl("naru_cpf").setNotification("CPF/CNPJ inválido");
             return
         }
         if (cpf.length == 14) {
