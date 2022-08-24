@@ -2,8 +2,9 @@
 
     OnChanceCPF_CNPJ: function (executionContext) {
         var formContext = executionContext.getFormContext();
-        formContext.ui.clearFormNotification("CPF")
-        formContext.ui.clearFormNotification("cpf/cnpj")
+        formContext.ui.clearFormNotification("CPF");
+        formContext.ui.clearFormNotification("cpf/cnpj");
+        formContext.ui.clearFormNotification("CNPJ");
 
         formContext.getControl("naru_nomefantasia").setVisible(false);
         formContext.getControl("naru_inscricaoestadual").setVisible(false);
@@ -12,7 +13,7 @@
         formContext.getAttribute("naru_inscricaoestadual").setValue("");
         formContext.getAttribute("naru_nomedocontato").setValue("");
 
-        var cpf = formContext.getAttribute("naru_cpf").getValue();
+        var cpf = formContext.getAttribute("naru_cpf").getValue().replace(/[^\d]/g, "");
         if (cpf == null || (cpf.length != 11 && cpf.length != 14)) {
             formContext.ui.setFormNotification("CPF/CNPJ inválido", "ERROR", "cpf/cnpj")
             //formContext.getControl("naru_cpf").setNotification("CPF/CNPJ inválido");
@@ -25,7 +26,8 @@
             formContext.getControl("naru_inscricaoestadual").setVisible(true);
             formContext.getControl("naru_nomedocontato").setVisible(true);
             formContext.getAttribute("naru_nomedocontato").setRequiredLevel("required");
-            Conta.ConsultaCNPJ(executionContext);
+            Conta.ConsultaCNPJ(cpf, executionContext);
+
         }
         else if (!Conta.ValidaCPF(cpf)) {
             formContext.ui.setFormNotification("CPF inválido", "ERROR", "CPF");
@@ -33,7 +35,9 @@
             formContext.getControl("naru_cpf").setFocus();
         }
         else {
-            formContext.ui.clearFormNotification("CPF")
+            formContext.ui.clearFormNotification("CPF");
+            cpf = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+            formContext.getAttribute("naru_cpf").setValue(cpf);
         }
         
     },
@@ -56,9 +60,9 @@
             }
         });
 
-        var reg = new RegExp([0 - 9]);
-        cep.replace("-", "");
-        var teste = reg.test(cep);
+        
+        cep.replace(/[^\d]/g, "");
+        
         if (cep.length == 8) {
             var req = new XMLHttpRequest();
 
@@ -78,6 +82,8 @@
                 formContext.getAttribute("address1_city").setValue(data.localidade);
                 formContext.getAttribute("address1_stateorprovince").setValue(data.uf);
                 formContext.getAttribute("address1_country").setValue("Brasil");
+                cep = cep.replace(/(\d{5})(\d{3})/, "$1-$2");
+                formContext.setAttribute("address1_postalcode").setValue(cep);
             }
         }
         else if (cep.length == 0) {
@@ -90,34 +96,27 @@
         }
 
 
-    }, ConsultaCNPJ: function (executionContext) {
+    }, ConsultaCNPJ: function (cnpj, executionContext) {
         var formContext = executionContext.getFormContext();
-        var cnpj = formContext.getAttribute("naru_cpf").getValue();
 
         var requisicao = new XMLHttpRequest()
         requisicao.open("GET", "https://api-publica.speedio.com.br/buscarcnpj?cnpj=" + cnpj, false);
         requisicao.send(null);
         var data = JSON.parse(requisicao.responseText);
 
-        //$.ajax({
-        //    type: "get",
-        //    url: "https://receitaws.com.br/v1/cnpj" + cnpj,
-        //    async: true,
-        //    dataType: "json",
-        //    crossDomain: true,
-        //    contentType: "application/json" ,
-        //    succes: function (data) {
-        //        formcontext.getattribute("naru_nomefantasia").setvalue(data.fantasia);
-        //        formcontext.getattribute("naru_inscricaoestadual").setvalue(data.atividade_principal[0].code)
-        //    },
-        //    error: function (data, exception, errorthrow) {
-        //        var corpo = data;
-        //    }
-        //})
-        formContext.ui.clearFormNotification("cpf/cnpj")
-        formContext.getAttribute("name").setValue(data["RAZAO SOCIAL"]);
-        formContext.getAttribute("naru_nomefantasia").setValue(data["NOME FANTASIA"]);
-        formContext.getAttribute("naru_inscricaoestadual").setValue(data["CNAE PRINCIPAL CODIGO"]);
+        if (!data.error.length == 0) {
+            formContext.ui.setFormNotification("CNPJ inválido", "ERROR", "CNPJ");
+            formContext.getAttribute("naru_cpf").setValue("");
+            formContext.getControl("naru_cpf").setFocus();
+        } else {
+          
+            formContext.ui.clearFormNotification("cpf/cnpj")
+            formContext.getAttribute("name").setValue(data["RAZAO SOCIAL"]);
+            formContext.getAttribute("naru_nomefantasia").setValue(data["NOME FANTASIA"]);
+            formContext.getAttribute("naru_inscricaoestadual").setValue(data["CNAE PRINCIPAL CODIGO"]);
+            cnpj = cnpj.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5");
+            formContext.getAttribute("naru_cpf").setValue(cnpj);
+        }
     },
     ValidaCPF: function (cpf) {
         var rep = 0;
