@@ -13,8 +13,11 @@
         formContext.getAttribute("naru_inscricaoestadual").setValue("");
         formContext.getAttribute("naru_nomedocontato").setValue("");
 
-        var cpf = formContext.getAttribute("naru_cpf").getValue().replace(/[^\d]/g, "");
-        if (cpf == null || (cpf.length != 11 && cpf.length != 14)) {
+        var cpf = formContext.getAttribute("naru_cpf").getValue();
+        if (cpf == null || cpf == "")
+            return
+        cpf.replace(/[^\d]/g, "");
+        if (cpf.length != 11 && cpf.length != 14) {
             formContext.ui.setFormNotification("CPF/CNPJ inválido", "ERROR", "cpf/cnpj")
             //formContext.getControl("naru_cpf").setNotification("CPF/CNPJ inválido");
             formContext.getAttribute("naru_cpf").setValue("");
@@ -83,7 +86,7 @@
                 formContext.getAttribute("address1_stateorprovince").setValue(data.uf);
                 formContext.getAttribute("address1_country").setValue("Brasil");
                 cep = cep.replace(/(\d{5})(\d{3})/, "$1-$2");
-                formContext.setAttribute("address1_postalcode").setValue(cep);
+                formContext.getAttribute("address1_postalcode").setValue(cep);
             }
         }
         else if (cep.length == 0) {
@@ -104,7 +107,7 @@
         requisicao.send(null);
         var data = JSON.parse(requisicao.responseText);
 
-        if (!data.error.length == 0) {
+        if (Object.keys(data).includes("error")) {
             formContext.ui.setFormNotification("CNPJ inválido", "ERROR", "CNPJ");
             formContext.getAttribute("naru_cpf").setValue("");
             formContext.getControl("naru_cpf").setFocus();
