@@ -44,8 +44,6 @@
             formContext.ui.setFormNotification("CPF/CNPJ inválido", "ERROR", "cpf/cnpj")
             formContext.getAttribute("naru_cpf").setValue("");
             formContext.getControl("naru_cpf").setFocus();
-            formContext.getControl("naru_cpf").clearNotification();
-            formContext.getControl("naru_cpf").setNotification("CPF/CNPJ inválido");
             return
         }
         if (cpf.length == 14) {
