@@ -17,7 +17,7 @@ namespace ConsoleDesativacao
             string ponteiro = @"AuthType = OAuth;
             Username = narualbuquerque@naru365.onmicrosoft.com;
             Password = We230398*;
-            Url = https://banconaru.crm2.dynamics.com/;
+            Url = https://devbanconaru.crm2.dynamics.com/;
             AppId = 51f81489-12ee-4a9e-aaae-a2591f45987d;
             RedirectUri = app://58145B91-0C36-4500-8554-080854F2AC97;
              LoginPrompt = Auto";

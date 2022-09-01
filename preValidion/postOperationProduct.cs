@@ -23,15 +23,24 @@ namespace Plugin
                     Entity produto = (Entity)contexto.InputParameters["Target"];
                     Entity itemListaPreco = new Entity("productpricelevel");
 
+                    QueryExpression busca = new QueryExpression("uom");
+                    ColumnSet colunas = new ColumnSet("uomid");
+                    var unidade = service.RetrieveMultiple(busca);
+
+
 
                     itemListaPreco.Attributes["pricelevelid"] = (EntityReference)produto.Attributes["pricelevelid"];
-                    itemListaPreco.Attributes["productid"] = (EntityReference)produto.Attributes["productid"];
+                    itemListaPreco.Attributes["productid"] = new EntityReference("product", (Guid)produto.Attributes["productid"]);
                     itemListaPreco.Attributes["naru_custo"] = (Money)produto.Attributes["naru_custo"];
-                    itemListaPreco.Attributes["naru_valordainstalacao"] = (Money)produto.Attributes["naru_precoinstalacao"];
+                    itemListaPreco.Attributes["amount"] = (Money)produto.Attributes["naru_precoinstalacao"];
                     itemListaPreco.Attributes["naru_valormensal"] = (Money)produto.Attributes["naru_preco"];
                     itemListaPreco.Attributes["roundingpolicycode"] = new OptionSetValue(1);
+                    itemListaPreco.Attributes["uomid"] = new EntityReference("uom", unidade.Entities.First<Entity>().GetAttributeValue<Guid>("uomid"));
 
-                    service.Create(itemListaPreco);
+                    if (contexto.MessageName.ToLower() == "create")
+                        service.Create(itemListaPreco);
+                    else
+                        service.Update(itemListaPreco);
                 }
 
 
