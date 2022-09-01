@@ -26,21 +26,28 @@ namespace ConsoleDesativacao
 
             QueryExpression expressao = new QueryExpression("product");
 
-            expressao.ColumnSet = new ColumnSet("productid", "statecode", "statuscode");
-            FilterExpression filtro = new FilterExpression(LogicalOperator.And);
-            filtro.AddCondition("statecode", ConditionOperator.Equal, 0);
-            filtro.AddCondition("statuscode", ConditionOperator.Equal, 1);
-            expressao.Criteria = filtro;
+            expressao.ColumnSet = new ColumnSet(true);
+            //FilterExpression filtro = new FilterExpression(LogicalOperator.And);
+            //filtro.AddCondition("statecode", ConditionOperator.Equal, 0);
+            //filtro.AddCondition("statuscode", ConditionOperator.Equal, 1);
+            //expressao.Criteria = filtro;
             EntityCollection produtos = servico.RetrieveMultiple(expressao);
-            foreach (var item in produtos.Entities)
-            {
-                Entity produtoAtualizado = new Entity("product");
-                produtoAtualizado.Id = item.Id;
-                produtoAtualizado.Attributes["statecode"] = new OptionSetValue(1);
-                produtoAtualizado.Attributes["statuscode"] = new OptionSetValue(2);
-                servico.Update(produtoAtualizado);
-                        
-            }
+
+            Entity entidade = produtos.Entities.First<Entity>();
+
+            var var = entidade.Attributes["pricelevelid"];
+            Guid guid = new Guid();
+            servico.Update(entidade);
+
+            //foreach (var item in produtos.Entities)
+            //{
+            //    Entity produtoAtualizado = new Entity("product");
+            //    produtoAtualizado.Id = item.Id;
+            //    produtoAtualizado.Attributes["statecode"] = new OptionSetValue(1);
+            //    produtoAtualizado.Attributes["statuscode"] = new OptionSetValue(2);
+            //    servico.Update(produtoAtualizado);
+
+            //}
 
 
         }

@@ -22,18 +22,19 @@ namespace Plugin
                     var service = serviceFactory.CreateOrganizationService(contexto.UserId);
                     Entity produto = contexto.InputParameters["Target"] as Entity;
 
-                    QueryExpression consultaUnit = new QueryExpression("uom");
-                    QueryExpression consultaGrupoUnit = new QueryExpression("uomschedule");
-                    QueryExpression consultaListaPreco = new QueryExpression("pricelevel");
+                    // QueryExpression consultaUnit = new QueryExpression("uom");
+                    // QueryExpression consultaGrupoUnit = new QueryExpression("uomschedule");
+                    //var unidade = service.RetrieveMultiple(consultaUnit);
+                    //produto.Attributes["defaultuomid"] = new EntityReference("uom", unidade.Entities.First<Entity>().Id);
 
-                    var unidade = service.RetrieveMultiple(consultaUnit);
-                    produto.Attributes["defaultuomid"] = new EntityReference("uom", unidade.Entities.First<Entity>().Id);
+                    //var grupoUnidade = service.RetrieveMultiple(consultaGrupoUnit);
+                    //produto.Attributes["defaultuomscheduleid"] = new EntityReference("uomschedule", grupoUnidade.Entities.First<Entity>().Id);
+                    //QueryExpression consultaListaPreco = new QueryExpression("pricelevel");
 
-                    var grupoUnidade = service.RetrieveMultiple(consultaGrupoUnit);
-                    produto.Attributes["defaultuomscheduleid"] = new EntityReference("uomschedule", grupoUnidade.Entities.First<Entity>().Id);
 
-                    var listaPreco = service.RetrieveMultiple(consultaListaPreco);
-                    produto.Attributes["pricelevelid"] = new EntityReference("pricelevel", listaPreco.Entities.First<Entity>().Id);
+
+                    //var listaPreco = service.RetrieveMultiple(consultaListaPreco);
+                    //produto.Attributes["pricelevelid"] = new EntityReference("pricelevel", listaPreco.Entities.First<Entity>().Id);
 
 
                 }
