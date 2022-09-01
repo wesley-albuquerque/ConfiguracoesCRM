@@ -46,6 +46,7 @@
   <ItemGroup>
     <Content Include="Conta.js" />
     <Content Include="ListaPreco.js" />
+    <Content Include="Produto.js" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
