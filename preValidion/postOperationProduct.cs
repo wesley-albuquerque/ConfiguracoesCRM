@@ -11,36 +11,28 @@ namespace Plugin
 {
     public class postOperationProduct : IPlugin
     {
+        public IOrganizationService Service { get; set; }
+
         public void Execute(IServiceProvider serviceProvider)
         {
+
             try
             {
+
                 var contexto = serviceProvider.GetService(typeof(IPluginExecutionContext)) as IPluginExecutionContext;
                 if ((contexto.MessageName.ToLower() == "create" || contexto.MessageName.ToLower() == "update") && contexto.Mode == (int)Enum.Mode.Synchronous && contexto.Stage == (int)Enum.Stage.PostOperation)
                 {
                     var serviceFactory = (IOrganizationServiceFactory)serviceProvider.GetService(typeof(IOrganizationServiceFactory));
-                    var service = serviceFactory.CreateOrganizationService(contexto.UserId);
+                    Service = serviceFactory.CreateOrganizationService(contexto.UserId);
                     Entity produto = (Entity)contexto.InputParameters["Target"];
-                    Entity itemListaPreco = new Entity("productpricelevel");
+                    Entity itemListaPreco = CriarItemListaPreco(produto);
 
-                    QueryExpression busca = new QueryExpression("uom");
-                    ColumnSet colunas = new ColumnSet("uomid");
-                    var unidade = service.RetrieveMultiple(busca);
-
-
-
-                    itemListaPreco.Attributes["pricelevelid"] = (EntityReference)produto.Attributes["pricelevelid"];
-                    itemListaPreco.Attributes["productid"] = new EntityReference("product", (Guid)produto.Attributes["productid"]);
-                    itemListaPreco.Attributes["naru_custo"] = (Money)produto.Attributes["naru_custo"];
-                    itemListaPreco.Attributes["amount"] = (Money)produto.Attributes["naru_precoinstalacao"];
-                    itemListaPreco.Attributes["naru_valormensal"] = (Money)produto.Attributes["naru_preco"];
-                    itemListaPreco.Attributes["roundingpolicycode"] = new OptionSetValue(1);
-                    itemListaPreco.Attributes["uomid"] = new EntityReference("uom", unidade.Entities.First<Entity>().GetAttributeValue<Guid>("uomid"));
 
                     if (contexto.MessageName.ToLower() == "create")
-                        service.Create(itemListaPreco);
+
+                        Service.Create(itemListaPreco);
                     else
-                        service.Update(itemListaPreco);
+                        Service.Update(itemListaPreco);
                 }
 
 
@@ -58,5 +50,31 @@ namespace Plugin
                 throw new InvalidPluginExecutionException(e.Message, e);
             }
         }
+        public Entity CriarItemListaPreco(Entity produto)
+        {
+            Entity itemListaPreco = new Entity("productpricelevel");
+
+            QueryExpression busca = new QueryExpression("uom");
+            ColumnSet colunas = new ColumnSet("uomid");
+            var unidade = Service.RetrieveMultiple(busca);
+
+            if (produto.Contains("pricelevelid"))
+                itemListaPreco.Attributes["pricelevelid"] = (EntityReference)produto.Attributes["pricelevelid"];
+            if (produto.Contains("productid"))
+                itemListaPreco.Attributes["productid"] = new EntityReference("product", (Guid)produto.Attributes["productid"]);
+            if (produto.Contains("naru_custo"))
+                itemListaPreco.Attributes["naru_custo"] = (Money)produto.Attributes["naru_custo"];
+            if (produto.Contains("amount"))
+                itemListaPreco.Attributes["amount"] = (Money)produto.Attributes["naru_precoinstalacao"];
+            if (produto.Contains("naru_valormensal"))
+                itemListaPreco.Attributes["naru_valormensal"] = (Money)produto.Attributes["naru_preco"];
+            if (produto.Contains("uomid"))
+                itemListaPreco.Attributes["uomid"] = new EntityReference("uom", unidade.Entities.First<Entity>().GetAttributeValue<Guid>("uomid"));
+            itemListaPreco.Attributes["roundingpolicycode"] = new OptionSetValue(1);
+
+            return itemListaPreco;
+        }
+       
+        
     }
 }

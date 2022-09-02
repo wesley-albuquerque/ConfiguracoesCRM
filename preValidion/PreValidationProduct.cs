@@ -54,5 +54,50 @@ namespace Plugin
             }
         }
 
+        public void ValidaCampos(Entity produto)
+        {
+            ListaString listaErros = new ListaString();
+
+            if (!produto.Contains("name") || produto.Attributes["name"].ToString() == "")
+            {
+                listaErros.Add("Nome");
+            }
+            if (!produto.Contains("naru_custo"))
+                listaErros.Add("Custo");
+
+            if (!produto.Contains("naru_preco"))
+                listaErros.Add("Valor Mensal");
+
+            if (!produto.Contains("naru_precoinstalacao"))
+                listaErros.Add("Valor Instalação");
+
+            if (!produto.Contains("naru_setor"))
+                listaErros.Add("Setor");
+            
+            if (listaErros.ListaErro.Count != 0)
+                throw new Exception("Os Campos " + listaErros.ToString() + " obrigatórios não preenchidos");
+            
+        }
+        
+        
+    }
+    public class ListaString
+    {
+        public List<string> ListaErro { get; set; }
+
+        public void Add(string erro)
+        {
+            ListaErro.Add(erro);
+        } 
+        public override string ToString()
+        {
+            string nome = "";
+            foreach (var item in ListaErro)
+            {
+                nome += item +", ";
+            }
+
+            return nome;
+        }
     }
 }
