@@ -92,6 +92,7 @@
   <ItemGroup>
     <Compile Include="Enum.cs" />
     <Compile Include="postOperationProduct.cs" />
+    <Compile Include="PreValidationItemPrice.cs" />
     <Compile Include="PreValidationProduct.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

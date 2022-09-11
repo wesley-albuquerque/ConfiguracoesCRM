@@ -25,6 +25,7 @@ namespace Plugin
                     var serviceFactory = (IOrganizationServiceFactory)serviceProvider.GetService(typeof(IOrganizationServiceFactory));
                     Service = serviceFactory.CreateOrganizationService(contexto.UserId);
                     Entity produto = (Entity)contexto.InputParameters["Target"];
+                   
                     Entity itemListaPreco = CriarItemListaPreco(produto);
 
 
@@ -54,9 +55,11 @@ namespace Plugin
         {
             Entity itemListaPreco = new Entity("productpricelevel");
 
-            QueryExpression busca = new QueryExpression("uom");
-            ColumnSet colunas = new ColumnSet("uomid");
-            var unidade = Service.RetrieveMultiple(busca);
+            // QueryExpression busca = new QueryExpression("uom");
+            //// busca.ColumnSet = new ColumnSet("uomid");
+            // ColumnSet colunas = new ColumnSet("uomid");
+            // var unidade = Service.RetrieveMultiple(busca);
+            
 
             if (produto.Contains("pricelevelid"))
                 itemListaPreco.Attributes["pricelevelid"] = (EntityReference)produto.Attributes["pricelevelid"];
@@ -69,12 +72,13 @@ namespace Plugin
             if (produto.Contains("naru_valormensal"))
                 itemListaPreco.Attributes["naru_valormensal"] = (Money)produto.Attributes["naru_preco"];
             if (produto.Contains("uomid"))
-                itemListaPreco.Attributes["uomid"] = new EntityReference("uom", unidade.Entities.First<Entity>().GetAttributeValue<Guid>("uomid"));
+                itemListaPreco.Attributes["uomid"] = new Guid("90ef2373-781f-411b-826f-c6bda6abfe9e");
+                    //new EntityReference("uom", unidade.Entities.First<Entity>().GetAttributeValue<Guid>("uomid"));
             itemListaPreco.Attributes["roundingpolicycode"] = new OptionSetValue(1);
 
             return itemListaPreco;
         }
-       
-        
+        //
+
     }
 }
