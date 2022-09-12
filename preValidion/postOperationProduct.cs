@@ -55,11 +55,11 @@ namespace Plugin
         {
             Entity itemListaPreco = new Entity("productpricelevel");
 
-            // QueryExpression busca = new QueryExpression("uom");
-            //// busca.ColumnSet = new ColumnSet("uomid");
-            // ColumnSet colunas = new ColumnSet("uomid");
-            // var unidade = Service.RetrieveMultiple(busca);
-            
+            QueryExpression busca = new QueryExpression("uom");
+            busca.ColumnSet = new ColumnSet("uomid","name");
+            //ColumnSet colunas = new ColumnSet("uomid");
+            var unidade = Service.RetrieveMultiple(busca);
+
 
             if (produto.Contains("pricelevelid"))
                 itemListaPreco.Attributes["pricelevelid"] = (EntityReference)produto.Attributes["pricelevelid"];
@@ -67,13 +67,12 @@ namespace Plugin
                 itemListaPreco.Attributes["productid"] = new EntityReference("product", (Guid)produto.Attributes["productid"]);
             if (produto.Contains("naru_custo"))
                 itemListaPreco.Attributes["naru_custo"] = (Money)produto.Attributes["naru_custo"];
-            if (produto.Contains("amount"))
+            if (produto.Contains("naru_precoinstalacao"))
                 itemListaPreco.Attributes["amount"] = (Money)produto.Attributes["naru_precoinstalacao"];
-            if (produto.Contains("naru_valormensal"))
+            if (produto.Contains("naru_preco"))
                 itemListaPreco.Attributes["naru_valormensal"] = (Money)produto.Attributes["naru_preco"];
-            if (produto.Contains("uomid"))
-                itemListaPreco.Attributes["uomid"] = new Guid("90ef2373-781f-411b-826f-c6bda6abfe9e");
-                    //new EntityReference("uom", unidade.Entities.First<Entity>().GetAttributeValue<Guid>("uomid"));
+            if (produto.Contains("defaultuomid"))
+                itemListaPreco.Attributes["uomid"] = new EntityReference("uom", (produto.GetAttributeValue<EntityReference>("defaultuomid")).Id);
             itemListaPreco.Attributes["roundingpolicycode"] = new OptionSetValue(1);
 
             return itemListaPreco;

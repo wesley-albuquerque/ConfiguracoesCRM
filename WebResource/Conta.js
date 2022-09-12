@@ -1,4 +1,4 @@
-﻿Conta = {
+﻿Conta = {    
 
     OnChangeTelefone: function (executionContext) {
         formContext = executionContext.getFormContext();
@@ -28,6 +28,7 @@
         formContext.ui.clearFormNotification("CPF");
         formContext.ui.clearFormNotification("cpf/cnpj");
         formContext.ui.clearFormNotification("CNPJ");
+        formContext.
 
         formContext.getControl("naru_nomefantasia").setVisible(false);
         formContext.getControl("naru_inscricaoestadual").setVisible(false);
