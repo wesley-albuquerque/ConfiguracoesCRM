@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Plugin
 {
-    public class postOperationProduct : IPlugin
+    public class PostOperationProduct : IPlugin
     {
         public IOrganizationService Service { get; set; }
 
@@ -55,12 +55,6 @@ namespace Plugin
         {
             Entity itemListaPreco = new Entity("productpricelevel");
 
-            QueryExpression busca = new QueryExpression("uom");
-            busca.ColumnSet = new ColumnSet("uomid","name");
-            //ColumnSet colunas = new ColumnSet("uomid");
-            var unidade = Service.RetrieveMultiple(busca);
-
-
             if (produto.Contains("pricelevelid"))
                 itemListaPreco.Attributes["pricelevelid"] = (EntityReference)produto.Attributes["pricelevelid"];
             if (produto.Contains("productid"))
@@ -72,7 +66,7 @@ namespace Plugin
             if (produto.Contains("naru_preco"))
                 itemListaPreco.Attributes["naru_valormensal"] = (Money)produto.Attributes["naru_preco"];
             if (produto.Contains("defaultuomid"))
-                itemListaPreco.Attributes["uomid"] = new EntityReference("uom", (produto.GetAttributeValue<EntityReference>("defaultuomid")).Id);
+                itemListaPreco.Attributes["uomid"] = produto.GetAttributeValue<EntityReference>("defaultuomid");
             itemListaPreco.Attributes["roundingpolicycode"] = new OptionSetValue(1);
 
             return itemListaPreco;
