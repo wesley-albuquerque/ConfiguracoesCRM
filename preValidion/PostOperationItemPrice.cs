@@ -39,20 +39,21 @@ namespace Plugin
 
                     EntityCollection listaProdutos = Service.RetrieveMultiple(new FetchExpression(fetchXml));
                     Entity produto = listaProdutos.Entities.FirstOrDefault();
+                    if (((Money)produto.Attributes["naru_custo"]).Value != ((Money)itemListaPreco.Attributes["naru_custo"]).Value || ((Money)produto.Attributes["naru_precoinstalacao"]).Value != ((Money)itemListaPreco.Attributes["amount"]).Value || ((Money)produto.Attributes["naru_preco"]).Value != ((Money)itemListaPreco.Attributes["naru_valormensal"]).Value)
+                    {
 
-                    //produto.Attributes["productid"] = itemListaPreco.GetAttributeValue<EntityReference>("productid");
-                    //if (itemListaPreco.Contains("naru_custo") && (Money)produto.Attributes["naru_custo"] != (Money)itemListaPreco.Attributes["naru_custo"])
-                    //    produto.Attributes["naru_custo"] = (Money)itemListaPreco.Attributes["naru_custo"];
-                    //if (itemListaPreco.Contains("amount") && (Money)produto.Attributes["naru_precoinstalacao"] != (Money)itemListaPreco.Attributes["amount"])
-                    //    produto.Attributes["naru_precoinstalacao"] = (Money)itemListaPreco.Attributes["amount"];
-                    if (itemListaPreco.Contains("naru_valormensal") && (Money)produto.Attributes["naru_preco"] != (Money)itemListaPreco.Attributes["naru_valormensal"])
-                        produto.Attributes["naru_preco"] = (Money)itemListaPreco.Attributes["naru_valormensal"];
-
-
-
-                    Service.Update(produto);
+                        if (itemListaPreco.Contains("naru_custo") && ((Money)produto.Attributes["naru_custo"]).Value != ((Money)itemListaPreco.Attributes["naru_custo"]).Value)
+                            produto.Attributes["naru_custo"] = (Money)itemListaPreco.Attributes["naru_custo"];
+                        if (itemListaPreco.Contains("amount") && ((Money)produto.Attributes["naru_precoinstalacao"]).Value != ((Money)itemListaPreco.Attributes["amount"]).Value)
+                            produto.Attributes["naru_precoinstalacao"] = (Money)itemListaPreco.Attributes["amount"];
+                        if (itemListaPreco.Contains("naru_valormensal") && ((Money)produto.Attributes["naru_preco"]).Value != ((Money)itemListaPreco.Attributes["naru_valormensal"]).Value)
+                            produto.Attributes["naru_preco"] = (Money)itemListaPreco.Attributes["naru_valormensal"];
 
 
+
+                        Service.Update(produto);
+
+                    }
                 }
 
             }
