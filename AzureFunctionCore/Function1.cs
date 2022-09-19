@@ -38,7 +38,7 @@ namespace NetFxWorker
             var response = req.CreateResponse(HttpStatusCode.OK);
             response.Headers.Add("Content-Type", "text/plain; charset=utf-8");
 
-            response.WriteString(conta.Attributes["name"].ToString());
+            response.WriteString(conta.Attributes["name"].ToString() + " " + conta.Id );
 
             return response;
         }
