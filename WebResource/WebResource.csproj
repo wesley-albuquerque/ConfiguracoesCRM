@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Conta.js" />
+    <Content Include="Oportunidade.js" />
     <Content Include="ListaPreco.js" />
     <Content Include="Produto.js" />
   </ItemGroup>
