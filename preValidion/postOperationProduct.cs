@@ -40,11 +40,11 @@ namespace Plugin
 
                     itemListaPreco = CriarItemListaPreco(produto, itemListaPreco);
 
+                    
 
                     if (contexto.MessageName.ToLower() == "create")
-
                         Service.Create(itemListaPreco);
-                    else 
+                    else if((produto.Contains("naru_custo") && ((Money)itemListaPreco.Attributes["naru_custo"]).Value != ((Money)produto.Attributes["naru_custo"]).Value) || (produto.Contains("naru_precoinstalacao") && ((Money)itemListaPreco.Attributes["amount"]).Value != ((Money)produto.Attributes["naru_precoinstalacao"]).Value) || (produto.Contains("naru_preco") && ((Money)itemListaPreco.Attributes["naru_valormensal"]).Value != ((Money)produto.Attributes["naru_preco"]).Value))
                         Service.Update(itemListaPreco);
                 }
 
