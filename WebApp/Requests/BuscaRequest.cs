@@ -11,5 +11,6 @@ namespace WebApp.Requests
         public string FiltroBusca { get; set; }
         public string Chave { get; set; }
         public string AttributeName { get; set; }
+
     }
 }

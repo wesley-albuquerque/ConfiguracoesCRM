@@ -75,6 +75,7 @@ namespace WebApp.Reponse
                     Endereco = InputEnderecoData(item)
 
                 };
+                Object.Add(conta);
             }
         }
         public Endereco InputEnderecoData(Entity EntidadeComEndereco)

@@ -37,7 +37,10 @@ namespace WebApp
                 DateTime inicio = DateTime.Now;
 
                 new Validacao(request.Chave);
-                string autenticacao = "string connection";
+                string autenticacao = @"AuthType=ClientSecret;
+  url=https://nicobanco.crm2.dynamics.com/;
+  ClientId=23cf9f49-47d6-475b-a2ff-a0524af31ea6;
+  ClientSecret=Y238Q~LTnXacV6C3srsNOjzqDNlmP4vYZbnNoduV";
 
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
                 CrmServiceClient credencial = new CrmServiceClient(autenticacao);

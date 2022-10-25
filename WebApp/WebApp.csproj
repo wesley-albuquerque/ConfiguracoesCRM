@@ -149,19 +149,27 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CriaAttConta.asmx" />
     <Content Include="DPDFConverterService\DynamicPDF.Converter.Service.exe" />
     <Content Include="DPDFConverterService\ReadMe.txt" />
     <Content Include="Web.config" />
     <Content Include="ConsultasWeb.asmx" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClassesCompartilhadas\Conexao.cs" />
+    <Compile Include="CriaAttConta.asmx.cs">
+      <DependentUpon>CriaAttConta.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Models\Account.cs" />
     <Compile Include="Models\Contact.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Requests\BuscaRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ClassesCompartilhadas\Endereco.cs" />
+    <Compile Include="Requests\InputRequest.cs" />
     <Compile Include="Response\BuscaResponse.cs" />
+    <Compile Include="Response\ResponseCriaAtt.cs" />
     <Compile Include="Validations\Validacao.cs" />
     <Compile Include="ConsultasWeb.asmx.cs">
       <DependentUpon>ConsultasWeb.asmx</DependentUpon>
