@@ -11,6 +11,16 @@ namespace WebApp.Response
 
         public string Message { get; set; }
 
+        /// <summary>
+        /// Construtor vazio para serialização do WebService
+        /// </summary>
+        public ResponseCriaAtt() { }
+        
+        /// <summary>
+        /// Construtor de resposta EndPoint
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="success"></param>
         public ResponseCriaAtt(string message, bool success)
         {
             Sucess = success;

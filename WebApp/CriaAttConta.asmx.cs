@@ -34,19 +34,11 @@ namespace WebApp
 
                 new Validacao(request.Chave);
 
-                Conexao conexao = new Conexao();
-                conexao.Autentica();
-                ResponseCriaAtt response = new ResponseCriaAtt("ok", true);
+                request.Conta();
+                
 
 
-
-
-
-
-
-
-
-                return response;
+                return new ResponseCriaAtt("saida 1", true);
             }
             catch (Exception ex)
             {
